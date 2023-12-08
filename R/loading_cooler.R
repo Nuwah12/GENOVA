@@ -23,7 +23,11 @@ loadCooler = function(cooler, balancing = T, scale_bp = NULL, scale_cis = F, res
                     name = paste0("/resolutions/",
                                   format(resolution, scientific = FALSE), 
                                   "/", bins_name)))
-    
+    if ("VC_SQRT" %in% colnames(ABS)) {
+      warning("Using Vanilla Coverage SQRT weights")
+      ABS$weight <- 1/ABS$VC_SQRT
+      ABS$weight[is.infinite(ABS$weight)] <- 0
+    }
     if('KR' %in% colnames(ABS)) {
       ABS$weight <- 1/ABS$KR
     }
@@ -50,6 +54,11 @@ loadCooler = function(cooler, balancing = T, scale_bp = NULL, scale_cis = F, res
   } else {
     ABS = data.table::as.data.table(rhdf5::h5read(file = cooler,
                                                   name = bins_name))
+    if ("VC_SQRT" %in% colnames(ABS)) {
+      warning("Using Vanilla Coverage SQRT weights")
+      ABS$weight <- 1/ABS$VC_SQRT
+      ABS$weight[is.infinite(ABS$weight)] <- 0
+    }
     if('KR' %in% colnames(ABS)) {
       ABS$weight <- 1/ABS$KR
     }
