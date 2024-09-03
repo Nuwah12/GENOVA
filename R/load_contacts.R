@@ -57,7 +57,8 @@ load_contacts = function(signal_path,
                          scale_cis = FALSE,
                          balancing = TRUE,
                          legacy = FALSE,
-                         verbose = TRUE){
+                         verbose = TRUE,
+                         normalization = 'weights'){
   
   # Control data.table threads
   dt.cores <- data.table::getDTthreads()
@@ -155,7 +156,7 @@ load_contacts = function(signal_path,
   }
   
   if(doCooler){
-    sig_ind = loadCooler(coolerPath, scale_bp = scale_bp,balancing = balancing, scale_cis = scale_cis, resolution = resolution)
+    sig_ind = loadCooler(coolerPath, scale_bp = scale_bp,balancing = balancing, scale_cis = scale_cis, resolution = resolution, normalization = normalization)
     balanced = balancing
   }
   
