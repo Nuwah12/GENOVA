@@ -20,6 +20,7 @@
 #' @param scale_cis Only scale with cis-contacts.
 #' @param legacy Get a pre-v1 object (mimics the output of construct.experiment.)
 #' @param verbose Do you want updates during the construction?
+#' @param norm Name of the normalization vector to use (default = 'weights')
 #' @note
 #' Some reference genomes have very small "random" or "patch" chromosomes,
 #' which can have zero contacts mapped to it (at certain resolutions).
@@ -58,7 +59,7 @@ load_contacts = function(signal_path,
                          balancing = TRUE,
                          legacy = FALSE,
                          verbose = TRUE,
-                         normalization = 'weights'){
+                         norm = 'weights'){
   
   # Control data.table threads
   dt.cores <- data.table::getDTthreads()
