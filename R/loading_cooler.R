@@ -1,4 +1,4 @@
-loadCooler = function(cooler, balancing = T, scale_bp = NULL, scale_cis = F, resolution = 10e3){
+loadCooler = function(cooler, balancing = T, scale_bp = NULL, scale_cis = F, resolution = 10e3, normalization = 'weight'){
   
   
   bins_name = "bins"
@@ -23,29 +23,18 @@ loadCooler = function(cooler, balancing = T, scale_bp = NULL, scale_cis = F, res
                     name = paste0("/resolutions/",
                                   format(resolution, scientific = FALSE), 
                                   "/", bins_name)))
-    if ("VC_SQRT" %in% colnames(ABS)) {
-      warning("Using Vanilla Coverage SQRT weights")
-      ABS$weight <- 1/ABS$VC_SQRT
-      ABS$weight[is.infinite(ABS$weight)] <- 0
+    if (normalization %in% colnames(ABS)) {
+      warning(paste0("Using ",normalization))
+      ABS$weight <- 1/ABS[,normalization]
     }
-    if('KR' %in% colnames(ABS)) {
-      ABS$weight <- 1/ABS$KR
-    }
-    
-    if(!'weight' %in% colnames(ABS)) {
+    else {
       balancing = F
-      warning('No weights-column found: cannot balance matrix!')
+      warning(paste0(normalization,' not found in cooler.'))
       ABS$weight <- NA
     }
     
     ABS <- ABS[, c("chrom", "start", "end",  "weight" ), with = F]
     ABS$bin = 1:nrow(ABS)
-    
-    
-    if(!'weight' %in% colnames(ABS)){
-      balancing = F
-      warning('No balancing is done due to missing weights.')
-    }
     SIG = data.table::as.data.table(
       rhdf5::h5read(file = cooler,
                     name = paste0("/resolutions/",
@@ -54,18 +43,13 @@ loadCooler = function(cooler, balancing = T, scale_bp = NULL, scale_cis = F, res
   } else {
     ABS = data.table::as.data.table(rhdf5::h5read(file = cooler,
                                                   name = bins_name))
-    if ("VC_SQRT" %in% colnames(ABS)) {
-      warning("Using Vanilla Coverage SQRT weights")
-      ABS$weight <- 1/ABS$VC_SQRT
-      ABS$weight[is.infinite(ABS$weight)] <- 0
+    if (normalization %in% colnames(ABS)) {
+      warning(paste0("Using ",normalization))
+      ABS$weight <- 1/ABS[,normalization]
     }
-    if('KR' %in% colnames(ABS)) {
-      ABS$weight <- 1/ABS$KR
-    }
-    
-    if(!'weight' %in% colnames(ABS)) {
+    else {
       balancing = F
-      warning('No weights-column found: cannot balance matrix!')
+      warning(paste0(normalization,' not found in cooler.'))
       ABS$weight <- NA
     }
     
