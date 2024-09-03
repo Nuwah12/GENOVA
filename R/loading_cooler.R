@@ -25,7 +25,7 @@ loadCooler = function(cooler, balancing = T, scale_bp = NULL, scale_cis = F, res
                                   "/", bins_name)))
     if (normalization %in% colnames(ABS)) {
       warning(paste0("Using ",normalization))
-      ABS$weight <- 1/ABS[,normalization]
+      ABS$weight <- ABS[,normalization]
     }
     else {
       balancing = F
@@ -45,7 +45,7 @@ loadCooler = function(cooler, balancing = T, scale_bp = NULL, scale_cis = F, res
                                                   name = bins_name))
     if (normalization %in% colnames(ABS)) {
       warning(paste0("Using ",normalization))
-      ABS$weight <- 1/ABS[,normalization]
+      ABS$weight <- ABS[,normalization]
     }
     else {
       balancing = F
