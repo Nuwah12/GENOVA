@@ -23,13 +23,14 @@ loadCooler = function(cooler, balancing = T, scale_bp = NULL, scale_cis = F, res
                     name = paste0("/resolutions/",
                                   format(resolution, scientific = FALSE), 
                                   "/", bins_name)))
+    print(paste0('Looking for ', norm, ' in ', colnames(ABS)))
     if (norm %in% colnames(ABS)) {
-      warning(paste0("Using ",norm))
+      print(paste0("Using ",norm))
       ABS$weight <- ABS[,norm]
     }
     else {
       balancing = F
-      warning(paste0(norm,' not found in cooler.'))
+      stop(paste0(norm,' not found in cooler.'))
       ABS$weight <- NA
     }
     
