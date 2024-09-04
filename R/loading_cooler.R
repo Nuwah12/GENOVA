@@ -1,4 +1,4 @@
-loadCooler = function(cooler, balancing = T, scale_bp = NULL, scale_cis = F, resolution = 10e3, normalization = 'weight'){
+loadCooler = function(cooler, balancing = T, scale_bp = NULL, scale_cis = F, resolution = 10e3, norm = 'weight'){
   
   
   bins_name = "bins"
@@ -23,13 +23,13 @@ loadCooler = function(cooler, balancing = T, scale_bp = NULL, scale_cis = F, res
                     name = paste0("/resolutions/",
                                   format(resolution, scientific = FALSE), 
                                   "/", bins_name)))
-    if (normalization %in% colnames(ABS)) {
-      warning(paste0("Using ",normalization))
-      ABS$weight <- ABS[,normalization]
+    if (norm %in% colnames(ABS)) {
+      warning(paste0("Using ",norm))
+      ABS$weight <- ABS[,norm]
     }
     else {
       balancing = F
-      warning(paste0(normalization,' not found in cooler.'))
+      warning(paste0(norm,' not found in cooler.'))
       ABS$weight <- NA
     }
     
@@ -43,9 +43,9 @@ loadCooler = function(cooler, balancing = T, scale_bp = NULL, scale_cis = F, res
   } else {
     ABS = data.table::as.data.table(rhdf5::h5read(file = cooler,
                                                   name = bins_name))
-    if (normalization %in% colnames(ABS)) {
-      warning(paste0("Using ",normalization))
-      ABS$weight <- ABS[,normalization]
+    if (norm %in% colnames(ABS)) {
+      warning(paste0("Using ",norm))
+      ABS$weight <- ABS[,norm]
     }
     else {
       balancing = F
