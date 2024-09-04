@@ -157,7 +157,7 @@ load_contacts = function(signal_path,
   }
   
   if(doCooler){
-    sig_ind = loadCooler(coolerPath, scale_bp = scale_bp,balancing = balancing, scale_cis = scale_cis, resolution = resolution, normalization = norm)
+    sig_ind = loadCooler(coolerPath, scale_bp = scale_bp,balancing = balancing, scale_cis = scale_cis, resolution = resolution, norm = norm)
     balanced = balancing
   }
   
